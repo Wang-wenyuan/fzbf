@@ -21,7 +21,8 @@ public class UserController implements UserControllerApi {
     UserService userService;
 
     /**
-     * 分页查询用户列表
+     * 分页查询用户列表,
+     * RequestBody拿的是body中的,如果是git请求不需要写入
      * @param page
      * @param size
      * @param queryPageRequest
@@ -60,5 +61,16 @@ public class UserController implements UserControllerApi {
     @PutMapping("/update/{id}")
     public UserResult update(@PathVariable("id") String id, @RequestBody User user) {
         return userService.update(id,user);
+    }
+
+    /**
+     * 根据id集合删除
+     * @param ids
+     * @return
+     */
+    @Override
+    @PostMapping("/deletes")
+    public ResponseResult deletes(@RequestBody String[] ids) {
+        return userService.deletes(ids);
     }
 }

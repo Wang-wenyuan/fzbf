@@ -10,6 +10,7 @@ import java.util.Date;
  */
 @Data
 public class QueryPageRequest {
+    private String username;
     private String nickname;
     private Date genTime;
     private String isAdmin;

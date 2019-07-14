@@ -64,5 +64,11 @@ public interface UserControllerApi {
     @ApiOperation("根据id修改用户")
     UserResult update(String id,User user);
 
-
+    /**
+     * 根据id集合删除用户
+     * @param ids
+     * @return
+     */
+    @ApiOperation("根据id删除用户")
+    ResponseResult deletes(String[] ids);
 }

@@ -2,10 +2,7 @@ package top.sifeizai.manage.service;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import top.sifeizai.exception.ExceptionCast;
 import top.sifeizai.framework.domain.management.User;
@@ -17,6 +14,7 @@ import top.sifeizai.model.response.QueryResponseResult;
 import top.sifeizai.model.response.QueryResult;
 import top.sifeizai.model.response.ResponseResult;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,17 +36,17 @@ public class UserService {
             queryPageRequest = new QueryPageRequest();
         }
         User user = new User();
-        if(StringUtils.isNotEmpty(queryPageRequest.getNickname())){
-            user.setNickname(queryPageRequest.getNickname());
-        }
-        if(queryPageRequest.getGenTime() !=null){
-            user.setGenTime(queryPageRequest.getGenTime());
-        }
-        if(queryPageRequest.getIsAdmin() !=null){
-            user.setIsAdmin(queryPageRequest.getIsAdmin());
-        }
+        user.setUsername(queryPageRequest.getUsername());
+        user.setIsAdmin(queryPageRequest.getIsAdmin());
+        user.setNickname(queryPageRequest.getNickname());
+        user.setGenTime(queryPageRequest.getGenTime());
+        user.setStatus(queryPageRequest.getStatus());
         //字段条件
-        Example<? extends User> example = Example.of(user);
+        ExampleMatcher exampleMatcher = ExampleMatcher.matching()
+                .withMatcher("username",ExampleMatcher.GenericPropertyMatchers.contains())
+                .withMatcher("nickname",ExampleMatcher.GenericPropertyMatchers.contains());
+        Example<? extends User> example = Example.of(user,exampleMatcher);
+
         if(page <= 0){
             page = 1;
         }
@@ -56,8 +54,9 @@ public class UserService {
         if(size <= 0){
             size = 10;
         }
+        Sort sort = new Sort(Sort.Direction.DESC,"genTime");
         //分页条件
-        Pageable pageable = PageRequest.of(page,size);
+        Pageable pageable = PageRequest.of(page,size,sort);
         Page<? extends User> all = userRepository.findAll(example,pageable);
         List<? extends User> content = all.getContent();//结果集
         long totalElements = all.getTotalElements();//总记录数
@@ -77,6 +76,7 @@ public class UserService {
         if(user == null){
             ExceptionCast.cast(CommonCode.INVALID_PARAM);
         }
+        user.setGenTime(new Date());
         userRepository.save(user);
         UserResult userResult = new UserResult(CommonCode.SUCCESS,user);
         return userResult;
@@ -147,12 +147,23 @@ public class UserService {
                 one.setPassword(user.getPassword());
             }
             if(StringUtils.isNotEmpty(user.getStatus())){
-                one.setPassword(user.getStatus());
+                one.setStatus(user.getStatus());
             }
             userRepository.save(one);
             return new UserResult(CommonCode.SUCCESS,one);
         }
         return new UserResult(CommonCode.FAIL,null);
 
+    }
+
+    /**
+     * 根据id集合删除
+     * @return
+     */
+    public ResponseResult deletes(String[] ids){
+        for (String id : ids) {
+            userRepository.deleteById(id);
+        }
+        return new ResponseResult(CommonCode.SUCCESS);
     }
 }
