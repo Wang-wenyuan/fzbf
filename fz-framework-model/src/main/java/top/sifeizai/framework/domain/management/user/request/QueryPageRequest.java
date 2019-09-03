@@ -1,4 +1,4 @@
-package top.sifeizai.framework.domain.management.request;
+package top.sifeizai.framework.domain.management.user.request;
 
 import lombok.Data;
 

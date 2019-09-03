@@ -1,8 +1,8 @@
-package top.sifeizai.framework.domain.management.response;
+package top.sifeizai.framework.domain.management.user.response;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import top.sifeizai.framework.domain.management.User;
+import top.sifeizai.framework.domain.management.user.User;
 import top.sifeizai.model.response.ResponseResult;
 import top.sifeizai.model.response.ResultCode;
 

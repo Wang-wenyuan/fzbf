@@ -4,9 +4,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import top.sifeizai.framework.domain.management.User;
-import top.sifeizai.framework.domain.management.request.QueryPageRequest;
-import top.sifeizai.framework.domain.management.response.UserResult;
+import top.sifeizai.framework.domain.management.user.User;
+import top.sifeizai.framework.domain.management.user.request.QueryPageRequest;
+import top.sifeizai.framework.domain.management.user.response.UserResult;
 import top.sifeizai.model.response.QueryResponseResult;
 import top.sifeizai.model.response.ResponseResult;
 

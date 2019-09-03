@@ -1,4 +1,4 @@
-package top.sifeizai.framework.domain.management;
+package top.sifeizai.framework.domain.management.user;
 
 import lombok.Data;
 import lombok.ToString;
@@ -49,4 +49,5 @@ public class User implements Serializable {
     private String activationCode;
     @Column(name = "is_admin")
     private String isAdmin;
+
 }
